@@ -13,8 +13,14 @@
     <button onclick="playGame('Rock');">Rock</button>
     <button onclick="playGame('Paper');">Paper</button>
     <button onclick="playGame('Scissors');">Scissors</button>
-    <button onclick="score.wins=0; score.losses=0; score.ties=0; localStorage.removeItem('score')">Reset Scores</button>
-
+    <p class="js-results"></p>
+    <p class="js-moves"></p>
+    <p class="js-score"></p>
+    <button onclick="score.wins=0;
+        score.losses=0; 
+        score.ties=0;
+        localStorage.removeItem('score');
+        updateScoreElement();">Reset Scores</button>
     <script>
         // Retrieve score from localStorage, or set default if not present
         let score = JSON.parse(localStorage.getItem('score'));
@@ -28,7 +34,7 @@
                 ties: 0,
             }
         }
-
+        updateScoreElement();
         // Function to play the game based on the player's move
         function playGame(playerMove) {
             const computerMove = pickComputerMove(); // Get the computer's move
@@ -72,11 +78,22 @@
 
             localStorage.setItem('score', JSON.stringify(score)); // Save updated scores in localStorage
 
+            updateScoreElement();
+
+            document.querySelector('.js-results').innerHTML = result;
+            document.querySelector('js-moves').innerHTML = `You ${playerMove} - ${computerMove} Computer`;
+
+
             // Display game result and scores in an alert
             alert(`You picked ${playerMove}. Computer picked ${computerMove}. ${result}. 
 Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`);
+
         }
 
+        function updateScoreElement()
+        {
+            document.querySelector('.js-score').innerHTML = `Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`;
+        }
         // Function to randomly pick the computer's move
         function pickComputerMove() {
             const randomNumber = Math.random();
